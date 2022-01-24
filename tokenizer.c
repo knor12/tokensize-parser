@@ -42,6 +42,45 @@ Tokenizer_getNumber ()
   return num;
 }
 
+
+static bool
+isNumber (char *str, int *num)
+{
+  char *ptr = str;
+  int num_;
+  if (*ptr == '-')
+    {
+      ptr += 1;
+      if ((*ptr < '0') || (*ptr > '9'))
+	{
+	  return false;
+	}
+
+      num_ = ('0' - (*ptr));
+
+    }
+  else if ((*ptr >= '0') && (*ptr <= '9'))
+    {
+      num_ = (*ptr - '0');
+    }
+  else
+    {
+      return false;
+    }
+
+  ptr += 1;
+  while ((*ptr >= '0') && (*ptr <= '9'))
+    {
+      num_ = num_ * 10;
+      num_ = num_ + *ptr - '0';
+      ptr += 1;
+    }
+  printf ("parsed number %d \n", num_);
+  *num = num_;
+  expression = ptr;
+  return true;
+}
+
 token_t
 Tokenizer_getToken ()
 {
@@ -62,18 +101,8 @@ Tokenizer_getToken ()
       expression = expression + 1;
       return right_braket;
     }
-  else if ((*expression >= '0') && (*expression <= '9'))
+  else if (isNumber (expression, &num))
     {
-      num = *expression - '0';
-      expression = expression + 1;
-
-      while ((*expression >= '0') && (*expression <= '9'))
-	{
-	  num = num * 10;
-	  num = num + *expression - '0';
-	  expression = expression + 1;
-	}
-
       return number;
     }
   else if (my_strcmp (expression, "add"))

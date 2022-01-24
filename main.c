@@ -20,7 +20,8 @@ int
 main ()
 {
   int err;
-  int i = Parser_parse ("sub(add(1,add(add(1,(1021)),1)),1000)", &err);
+  int i ; 
+  i = Parser_parse ("sub(add(1,add(add(1,(1021)),1)),1000)", &err);
   printf ("s=%d\n", i);
 
   i = Parser_parse ("add(100,div((10),(2)))", &err);
@@ -34,10 +35,12 @@ main ()
   i = Parser_parse ("div(100,add(2,1))", &err);
   printf ("s=%d\n", i);
 
-  i =
-    Parser_parse
-    ("(sub(div(mul(     add(add(1,add  (1,1)),1),            10),40),3))",
-     &err);
+  i =Parser_parse("(sub(div(mul(     add(add(1,add  (1,-1)),1),            10),40),3))",&err);
+  printf ("s=%d\n", i);
+  
+  
+  
+  i = Parser_parse ("mul(add(-0,1000), 5856)", &err);
   printf ("s=%d\n", i);
 
   return 0;
